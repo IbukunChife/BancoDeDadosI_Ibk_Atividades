@@ -1,0 +1,427 @@
+############################################################
+URI Online Judge SQL | 2602
+Select Básico
+############################################################
+  SOLUCAO
+############################################################
+
+SELECT name FROM customers
+WHERE state = 'RS'
+;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2603
+Endereço dos Clientes
+############################################################
+  SOLUCAO
+############################################################
+
+SELECT name, street FROM customers
+WHERE city = 'Porto Alegre'
+;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2604
+Menores que 10 ou Maiores que 100
+############################################################
+  SOLUCAO
+############################################################
+
+SELECT id,name FROM products
+WHERE price < 10 OR price > 100
+;
+############################################################
+
+
+
+############################################################
+URI Online Judge SQL | 2605
+Representantes Executivos
+############################################################
+  SOLUCAO
+############################################################
+
+SELECT products.name, providers.name FROM products 
+JOIN providers on products.id_categories = 6 AND products.id_providers = providers.id ;
+
+############################################################
+
+
+
+############################################################
+URI Online Judge SQL | 2606
+Categorias
+############################################################
+  SOLUCAO
+############################################################
+
+SELECT products.id, products.name FROM products 
+JOIN categories on products.id_categories = categories.id AND categories.name like 'super%';
+############################################################
+
+
+############################################################
+RI Online Judge SQL | 2607
+Cidades em Ordem Alfabética
+############################################################
+  SOLUCAO
+############################################################
+
+SELECT providers.city from providers ORDER BY providers.city ASC;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2608
+Maior e Menor Preço
+############################################################
+  SOLUCAO
+############################################################
+
+SELECT max(price), min(price) from products;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2609
+Produtos por Categorias
+############################################################
+  SOLUCAO
+############################################################
+SELECT 
+ categories.name,
+ sum(products.amount)
+ FROM products , categories
+ Where products.id_categories = categories.id
+ GROUP BY categories.name;
+
+############################################################
+
+
+
+############################################################
+URI Online Judge SQL | 2610
+Valor Médio dos Produtos
+############################################################
+  SOLUCAO
+############################################################
+SELECT round(AVG(price),2) FROM products;
+
+############################################################
+
+
+
+############################################################
+URI Online Judge SQL | 2611
+Filmes de Ação
+############################################################
+  SOLUCAO
+############################################################
+SELECT movies.id, movies.name
+from movies , genres
+where movies.id_genres = genres.id AND genres.description = 'Action';
+############################################################
+
+
+
+############################################################
+URI Online Judge SQL | 2613
+Filmes em Promoção
+############################################################
+  SOLUCAO
+############################################################
+SELECT movies.id, movies.name
+from movies , prices
+where movies.id_prices = prices.id AND prices.value < 2.00;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2612
+Os Atores Silva
+############################################################
+  SOLUCAO
+############################################################
+SELECT DISTINCT movies.id , movies.name
+from movies, genres, movies_actors, actors
+where  movies.id_genres = genres.id 
+AND movies_actors.id_movies = movies.id
+AND  movies_actors.id_actors = actors.id
+AND (actors.name = 'Marcelo Silva' OR  
+actors.name = 'Miguel Silva')
+AND genres.description = 'Action';
+############################################################
+
+############################################################
+URI Online Judge SQL | 2615
+Expandindo o Negocio
+############################################################
+  SOLUCAO
+############################################################
+SELECT DISTINCT customers.city from customers;
+############################################################
+
+############################################################
+URI Online Judge SQL | 2614
+Locações de Setembro
+############################################################
+  SOLUCAO
+############################################################
+SELECT name,rentals_date
+from customers, rentals
+WHERE customers.id = id_customers AND rentals_date >= '2016-09-01' AND
+rentals_date <= '2016-09-30';
+############################################################
+
+############################################################
+URI Online Judge SQL | 2616
+Nenhuma Locação
+############################################################
+  SOLUCAO
+############################################################
+SELECT 
+customers.id,
+customers.name
+FROM customers
+WHERE customers.id not in ( SELECT customers.id
+FROM customers,locations where  customers.id = locations.id_customers);
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2617
+Fornecedor Ajax SA
+############################################################
+  SOLUCAO
+############################################################
+SELECT products.name , providers.name
+FROM products , providers
+WHERE products.id_providers = providers.id AND providers.name = 'Ajax SA';
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2619
+Super Luxo
+############################################################
+  SOLUCAO
+############################################################
+SELECT products.name,providers.name,
+products.price
+FROM products, providers, categories
+WHERE products.id_providers = providers.id
+AND products.id_categories = categories.id 
+AND products.price > 1000
+AND categories.name = 'Super Luxury';
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2618
+Produtos Importados
+############################################################
+  SOLUCAO
+############################################################
+SELECT products.name,providers.name,
+categories.name
+FROM products, providers, categories
+WHERE products.id_providers = providers.id
+AND products.id_categories = categories.id 
+AND providers.name = 'Sansul SA'
+AND categories.name = 'Imported';
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2621
+Quantidades entre 10 e 20
+############################################################
+  SOLUCAO
+############################################################
+SELECT products.name
+FROM products, providers
+WHERE products.id_providers = providers.id
+AND products.amount BETWEEN 10 AND 20
+AND providers.name like 'P%';
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2620
+Pedidos no Primeiro Semestre
+############################################################
+  SOLUCAO
+############################################################
+SELECT customers.name , orders.id
+FROM customers, orders
+WHERE customers.id = orders.id_customers
+AND (orders.orders_date 
+BETWEEN '2016-01-01' AND '2016-06-30');
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2623
+Categorias com Vários Produtos
+############################################################
+  SOLUCAO
+############################################################
+SELECT products.name, categories.name
+FROM products 
+JOIN categories ON products.id_categories = categories.id
+WHERE products.amount > 100 
+AND products.id_categories in (1,2,3,6,9); 
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2622
+Pessoas jurídicas
+############################################################
+  SOLUCAO
+############################################################
+SELECT customers.name
+FROM customers join legal_person on customers.id = legal_person.id_customers; 
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2625
+Máscara de CPF
+############################################################
+  SOLUCAO
+############################################################
+SELECT CONCAT(SUBSTRING(natural_person.cpf,1,3),'.',
+SUBSTRING(natural_person.cpf,4,3),'.',
+SUBSTRING(natural_person.cpf,7,3),'-',
+SUBSTRING(natural_person.cpf,10)) as cpf
+from customers join natural_person ON customers.id = natural_person.id_customers; 
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2624
+Quantidades de Cidades por Clientes
+############################################################
+  SOLUCAO
+############################################################
+SELECT COUNT( DISTINCT customers.city) from customers; 
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2738
+Concurso
+############################################################
+  SOLUCAO
+############################################################
+SELECT candidate.name, round(
+(
+((math * 2)+
+(specific * 3)+
+(project_plan * 5))/10)
+,2) as avg
+from candidate, score
+WHERE candidate.id = score.candidate_id
+ORDER BY avg DESC ;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2737
+Advogados
+############################################################
+  SOLUCAO
+############################################################
+SELECT name, customers_number 
+FROM lawyers
+WHERE customers_number = ( SELECT MAX(customers_number) FROM lawyers )
+UNION ALL
+SELECT name, customers_number
+FROM lawyers
+WHERE customers_number = ( SELECT MIN(customers_number) FROM lawyers )
+UNION ALL
+SELECT 'Average', ROUND(AVG(customers_number),0) FROM lawyers;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2740
+Liga
+############################################################
+  SOLUCAO
+############################################################
+SELECT concat('Podium: ', league.team) as name 
+from league
+WHERE league.position <=3 
+UNION ALL
+SELECT concat('Demoted: ',league.team) as name
+from league, (SELECT league.position FROM league order by league.position DESC limit 2) as P
+WHERE league.position = P.position ;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2739
+Dia de Pagamento
+############################################################
+  SOLUCAO
+############################################################
+select name, CAST((EXTRACT(DAY FROM payday)) AS int) as day
+    from loan;
+############################################################
+
+############################################################
+URI Online Judge SQL | 2742
+O Multiverso de Richard
+############################################################
+  SOLUCAO
+############################################################
+SELECT life_registry.name , 
+round(life_registry.omega * 1.618,3) as "Fator N"
+FROM dimensions 
+join life_registry ON dimensions.id = life_registry.dimensions_id
+WHERE life_registry.name like 'Richard%'
+AND dimensions.name in ('C774','C875')
+order by life_registry.omega ASC;
+############################################################
+
+
+############################################################
+URI Online Judge SQL | 2741
+Notas dos Alunos
+############################################################
+  SOLUCAO
+############################################################
+SELECT concat('Approved: ', students.name) as name , grade
+FROM  students
+where students.grade >= 7
+ORDER BY grade desc;
+############################################################
+
+
+
+############################################################
+URI Online Judge SQL | 2745
+Taxas
+############################################################
+  SOLUCAO
+############################################################
+SELECT people.name , round( (salary * 10)/100,2) as tax from
+people WHERE people.salary > 3000 ;
+############################################################
+
+
+
+##########################################################
+URI Online Judge SQL | 2746
+Virus
+##########################################################
+  SOLUCAO
+##########################################################
+SELECT replace(name,'H1','X') as name from virus;
+############################## ###########################
